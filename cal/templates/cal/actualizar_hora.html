@@ -1,0 +1,27 @@
+{% extends 'reg/base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+{% endblock %}
+
+{% block contenido %}
+{% include 'reg/mensajes.html' %}
+<h1>Actualizar hora</h1>
+
+<form action="" method="POST">
+	{% csrf_token %}
+	<table id="actualizarhora" class="table">
+	{{ form.as_table }}
+	</table>
+	<input class="btn btn-primary mx-auto mb-5 d-block" type="submit" value="OK">
+</form>
+
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+{{ form.media }}
+<script src="{% static 'cal/js/horaform.js' %}"></script>
+{% endblock %}

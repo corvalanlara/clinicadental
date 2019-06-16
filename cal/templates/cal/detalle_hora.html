@@ -1,0 +1,29 @@
+{% extends 'reg/base.html' %}
+{% load regtags %}
+{% block contenido %}
+{% include 'reg/mensajes.html' %}
+
+<div class="jumbotron jumbotron-fluid text-center mx-2 my-4">
+	<h1 class="display-5"><a href="{{ hora.servicio.presupuesto.paciente.get_absolute_url }}">{{ hora.servicio.presupuesto.paciente }}</a></h1>
+	<p class="lead">{{ hora.servicio.prestacion.nombre }}{% if hora.servicio.pieza %} en {{ hora.servicio.pieza}}{% endif %} el día {{ hora.inicio|date }} a las {{ hora.inicio|time }} en el box {{ hora.box }}</p>
+	<p><a href="tel:{{ hora.servicio.presupuesto.paciente.celular }}">&#128242;{{ hora.servicio.presupuesto.paciente.celular }}</a></p>
+
+	{% if not hora.realizada %}
+	{% if request.user|en_grupo:'Médicos' %}
+	<a class="btn btn-primary" href="{% url 'concretarhora' hora.id %}">Concretar</a>
+	{% elif request.user|en_grupo:'Administrativos' %}
+	<a class="btn btn-primary" href="{% url 'actualizarhora' hora.id %}">Reagendar</a>
+	<a class="btn btn-primary" href="{% url 'eliminarhora' hora.id %}">Eliminar</a>
+	{% endif %}
+	{% else %}
+	<p class="lead">Hora realizada</p>
+	{% if hora.comentarios %}
+	<p class="lead">{{ hora.comentarios }}</p>
+	{% else %}
+	<p>Sin observaciones</p>
+	{% endif%}
+	{% endif %}
+
+</div>
+
+{% endblock %}

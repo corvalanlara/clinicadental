@@ -1,0 +1,19 @@
+{% extends "reg/base.html" %}
+{% load static %}
+
+{% block agenda %}active{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'cal/css/agenda.css' %}"/>
+{% endblock %}
+
+{% block contenido %}
+{% include 'reg/mensajes.html' %}
+<h1 class="display-4 text-center">Horas del día</h1>
+{{agenda|safe}}
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="{% static 'cal/js/agenda.js' %}"></script>
+</script>
+{% endblock %}

@@ -1,0 +1,51 @@
+{
+    "name": "Clínica dental Dr. Mauricio Martínez",
+    "short_name": "Clínica dental",
+    "description": "Web App progresiva para el registro de pacientes y reserva de horas de la Clínica dental Dr. Mauricio Martínez V.",
+    "icons": [
+        {
+            "src": "https://clinicadentalmelipilla.herokuapp.com/static/reg/icons/tooth32.1d185931b7af.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "https://clinicadentalmelipilla.herokuapp.com/static/reg/icons/tooth64.9a75e5b34110.png",
+            "sizes": "64x64",
+            "type": "image/png"
+        },
+        {
+            "src": "https://clinicadentalmelipilla.herokuapp.com/static/reg/icons/tooth96.501c18011a16.png",
+            "sizes": "96x96",
+            "type": "image/png"
+        },
+        {
+            "src": "https://clinicadentalmelipilla.herokuapp.com/static/reg/icons/tooth128.60f2c44edb3c.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+        {
+            "src": "https://clinicadentalmelipilla.herokuapp.com/static/reg/icons/tooth168.3920d114b7de.png",
+            "sizes": "168x168",
+            "type": "image/png"
+        },
+        {
+            "src": "https://clinicadentalmelipilla.herokuapp.com/static/reg/icons/tooth192.fb9719d179c1.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "https://clinicadentalmelipilla.herokuapp.com/static/reg/icons/tooth256.ba74cc5913a9.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "https://clinicadentalmelipilla.herokuapp.com/static/reg/icons/tooth512.7747c59807c8.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "/?from=webapp",
+    "display": "standalone",
+    "theme_color": "#007BFF",
+    "background_color": "#007BFF"
+}

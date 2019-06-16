@@ -1,0 +1,29 @@
+{% extends "reg/base.html" %}
+{% load static %}
+{% load staticfiles %}
+
+{% block nuevo %}active{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'reg/css/styles.css' %}"/>
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'reg/js/formtotal.js' %}"></script>
+{% endblock %}
+
+{% block contenido %}
+{% include 'reg/mensajes.html' %}
+	<h1>Presupuesto para nuevo paciente</h1>
+        <form action="" method="post" id="nuevo_formtotal">
+                {% csrf_token %}
+                <table id="formtotal" class="table">
+                        {{ form.as_table }}
+                </table>
+                <input id="envioformtotal" class="btn btn-primary mx-auto mb-5 d-block" type="submit" value="OK">
+        </form>
+{% endblock %}
+{% block footer %}
+{{ form.media }}
+{% endblock %}
+

@@ -1,0 +1,24 @@
+{% extends "reg/base.html" %}
+
+{% block contenido %}
+{% include 'reg/mensajes.html' %}
+{% if resultados%}
+    <h1>Resultados de la búsqueda</h1>
+    {% for result in resultados %}
+    <ul>
+        <li>
+            <article>
+                <h2>
+                    {% if result.get_absolute_url %}<a href="{{result.get_absolute_url}}">{% endif %}
+                    {{result.object}}
+                    {% if result.url %}</a>{% endif %}
+                </h2>
+            </article>
+        </li>
+    </ul>
+    {% endfor %}
+{% else %}
+    <h1>No hay resultados</h1>
+    <h3>Recuerda, puedes buscar por nombre, apellidos o RUN</h3>
+{% endif %}
+{% endblock %}

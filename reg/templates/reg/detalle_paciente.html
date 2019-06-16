@@ -1,0 +1,93 @@
+{% extends 'reg/base.html' %}
+{% load regtags %}
+{% block contenido %}
+{% include 'reg/mensajes.html' %}
+
+<div class="jumbotron jumbotron-fluid text-center my-2">
+  <div class="container">
+<h1 class="display-4">{{ paciente.nombre }} {{ paciente.apellido_paterno }} {{ paciente.apellido_materno }}</h1>
+
+<h2 class="display-5">Contacto:</h2>
+<p class="lead"><a href="tel:{{ paciente.celular }}">{{ paciente.celular }}</a></p>
+<p class="lead"><a href="https://wa.me/{{ paciente.whatsapp }}">Enviar WhatsApp</a></p>
+{% if paciente.correo %}<p class="lead"><a href="mailto:{{ paciente.correo }}">{{ paciente.correo }}</a></p>{% endif %}
+
+<h2 class="display-5">Antecedentes médicos:</h2>
+<p class="lead">{% if paciente.alergias %}Alergias: {{ paciente.alergias }}{% else %}Sin alergias conocidas{% endif %}</p>
+<p class="lead">{% if paciente.medicamentos %}Medicamentos: {{ paciente.medicamentos }}{% else %}No utiliza medicamentos de uso permanente{% endif %}</p>
+
+{% if presupuestos %}
+<div><h2 class="display-5 d-inline">Presupuestos</h2>
+<button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#todoPresu" aria-expanded="false" aria-controls="todoPresu">&#9660;</button></div>
+<div class="collapse" id="todoPresu">
+	<div class="card card-body">
+{% for presupuesto, cotizado in presupuestos.items %}
+<div class="accordion" id="acordeonPresupuesto">
+	<div class="card">
+		<div class="card-header" id="head{{ presupuesto.id }}">
+		<h3 class="mb-0">
+			<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#presu{{ presupuesto.id }}" aria-expanded="false" aria-controls="presu{{ presupuesto.id }}">
+			Presupuesto del {{ presupuesto.fecha_creacion }}
+			</button>
+		</h3>
+		</div>
+		<div id="presu{{ presupuesto.id }}" class="collapse" aria-labelledby="head{{ presupuesto.id }}" data-parent="#acordeonPresupuesto">
+			<div class="card-body">
+			{% for elemento in cotizado %}
+				<p class="lead">{{ elemento.detalle }}: {{ elemento.monto }}</p>
+				{% empty %}
+				<p class="lead">Ninguna prestación fue registrada en este presupuesto</p>
+			{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endfor %}
+</div>
+</div>
+{% endif %}
+
+{% if realizados %}
+<div><h3 class="display-5 d-inline">Tratamientos realizados</h3>
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#todoRealizados" aria-expanded="false" aria-controls="todoRealizados">&#9660;</button></div>
+<div class="collapse" id="todoRealizados">
+        <div class="card card-body">
+{% for realizado in realizados %}
+<p class="lead">{{ realizado.servicio.detalle }}: {{ realizado.servicio.monto }}</p>
+	{% if realizado.comentarios %}
+<p class="lead">{{ realizado.comentarios }}</p>
+	{% else %}
+<p class="lead">Sin observaciones</p>
+	{% endif %}
+{% endfor %}
+	</div>
+	</div>
+{% endif %}
+
+{% if horas_futuras %}
+<div><h3 class="display-5 d-inline">Horas futuras</h3>
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#horasFuturas" aria-expanded="false" aria-controls="horasFuturas">&#9660;</button></div>
+<div class="collapse" id="horasFuturas">
+        <div class="card card-body">
+{% for hora in horas_futuras %}
+<p class="lead"><a href="{% url 'detallehora' hora.id %}">{{ hora.servicio.prestacion.nombre }} el día {{ hora.inicio|date }}</a></p>
+{% endfor %}
+        </div>
+        </div>
+
+{% endif %}
+
+{% if deuda_total >= 0 %}
+<h3 class="display-5">Deuda total: {{ deuda_total }}<h3>
+{% else %}
+<h3 class="display-5">Abono: {{ deuda_total|absoluto }}</h3>
+{% endif %}
+
+<div class="inline-block">
+<a class="btn btn-primary" href="{% url 'ingresar_pago' paciente.run %}">Realizar pago</a>
+<a class="btn btn-primary" href="{% url 'reservarhora' paciente.run %}">Reservar hora</a>
+</div>
+
+</div>
+
+{% endblock %}

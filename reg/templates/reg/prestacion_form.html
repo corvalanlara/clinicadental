@@ -1,0 +1,20 @@
+{% extends "reg/base.html" %}
+{% load static %}
+
+{% block nuevo %}active{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'reg/css/styles.css' %}">
+{% endblock %}
+
+{% block contenido %}
+{% include 'reg/mensajes.html' %}
+	<h1>Nueva Prestación</h1>
+	<form action="" method="post" id="nueva_prestacion">
+		{% csrf_token %}
+		<table id="prestacion_form" class="table">
+			{{ form.as_table }}
+		</table>
+		<input class="btn btn-primary mx-auto mb-5 d-block" type="submit" value="OK">
+	</form>
+{% endblock %}

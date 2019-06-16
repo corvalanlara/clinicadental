@@ -1,0 +1,15 @@
+{% extends "reg/base.html" %}
+
+{% block contenido %}
+{% include 'reg/mensajes.html' %}
+
+<h1 class="display-4 text-center">¿Cancelar hora reservada?</h1>
+<p>¿Estás seguro que deseas cancelar la hora de {{ hora.servicio.presupuesto.paciente }} para el {{ hora.inicio|date }} a las {{ hora.inicio|time }}?</p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input class="btn btn-primary mx-auto mb-5 d-block" type="submit" value="Sí, cancelar">
+</form>
+
+{% endblock %}
+

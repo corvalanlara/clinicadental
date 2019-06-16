@@ -1,0 +1,145 @@
+{% extends "reg/base.html" %}
+{% load regtags %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'reg/css/styles.css' %}"/>
+{% endblock %}
+
+{% block contenido %}
+{% include 'reg/mensajes.html' %}
+<section class="container-fluid">
+	<h1 class="display-4 text-center">Inicio</h1>
+</section>
+
+{% if user.is_authenticated %}
+{% if request.user|en_grupo:'Administrativos' %}
+{% if evals %}
+        <h3 class="text-center">Evaluaciones de mañana</h3>
+        <table class="table" id="porllamar">
+                <caption>Lista de las evaluaciones solicitadas que requieren confirmación</caption>
+                <thead class="thead-dark">
+                        <tr>
+                                <th class="text-center" scope="col">Detalle</th>
+                                <th class="text-center" scope="col">Teléfono</th>
+                                <th class="text-center" scope="col">WhatsApp</th>
+				<th class="text-center" scope="col"></th>
+                                <th class="text-center" scope="col"></th>
+                                <th class="text-center" scope="col">Listo</th>
+                        </tr>
+                </thead>
+                <tbody>
+                {% for eval in evals %}
+                <tr class="text-warning text-center lead">
+                        <td>{{eval.nombre}} a las {{eval.hora|date:'H:i'}}</td>
+                        <td><a href="tel:{{ eval.celular }}">&#128222; {{ eval.celular }}</a></td>
+			<td><a class="btn btn-primary" href="https://wa.me/{{ eval.whatsapp }}?text={{ eval.mensaje }}">Enviar WhatsApp</a></td>
+                        <td><a class="btn btn-primary" href="{% url 'actualizareval' eval.pk %}">Reagendar</a></td>
+                        <td><a class="btn btn-primary" href="{% url 'eliminareval' eval.pk %}">Eliminar</a></td>
+                        <td><input type="checkbox" id="{{ hora.id }}__{% now 'd-m' %}" autocomplete="off"/></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+        </table>
+{% else %}
+
+<h5 class="lead text-center">No hay evaluaciones solicitadas para mañana</h5>
+
+{% endif %}
+{% if horas %}
+	<h3 class="text-center">Horas de mañana</h3>
+	<table class="table" id="porllamar">
+		<caption>Lista de horas que requieren confirmación</caption>
+		<thead class="thead-dark">
+			<tr>
+				<th class="text-center" scope="col">Detalle</th>
+				<th class="text-center" scope="col">Teléfono</th>
+				<th class="text-center" scope="col">WhatsApp</th>
+				<th class="text-center" scope="col"></th>
+				<th class="text-center" scope="col"></th>
+				<th class="text-center" scope="col">Listo</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for hora in horas %}
+		<tr class="text-warning text-center lead">
+			<td>&#128100;{{hora.servicio.presupuesto.paciente}} a las {{hora.inicio|date:'H:i'}} por un {{ hora.servicio.prestacion.nombre }}</td>
+			<td><a href="tel:{{ hora.servicio.presupuesto.paciente.celular }}">&#128222; {{hora.servicio.presupuesto.paciente.celular}}</a></td>
+			<td><a class="btn btn-primary" href="https://wa.me/{{ hora.servicio.presupuesto.paciente.whatsapp }}?text={{ hora.mensaje }}">Enviar</a></td>
+			<td><a class="btn btn-primary" href="{% url 'actualizarhora' hora.id %}">Reagendar</a></td>
+			<td><a class="btn btn-primary" href="{% url 'eliminarhora' hora.id %}">Eliminar</a></td>
+			<td><input type="checkbox" id="{{ hora.id }}_{% now 'd-m' %}" autocomplete="off"/></td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+
+<h5 class="lead text-center">No hay horas reservadas para mañana</h5>
+
+{% endif %}
+{% elif request.user|en_grupo:'Médicos' %}
+{% if perms.cal.evaluar %}
+{% if evals %}
+        <h3 class="text-center">Evaluaciones del día</h3>
+        <table class="table" id="porllamar">
+                <caption>Lista de las evaluaciones agendadas para el día de hoy</caption>
+                <thead class="thead-dark">
+                        <tr>
+                                <th class="text-center" scope="col">Detalle</th>
+                                <th class="text-center" scope="col">Teléfono</th>
+                                <th class="text-center" scope="col"></th>
+                                <th class="text-center" scope="col"></th>
+                        </tr>
+                </thead>
+                <tbody>
+                {% for eval in evals %}
+                <tr class="text-warning text-center lead">
+                        <td>{{eval.nombre}} a las {{eval.hora|date:'H:i'}}</td>
+			<td><a href="tel:{{ eval.celular }}">&#128222; {{ eval.celular }}</a></td>
+			<td><a class="btn btn-primary" href="https://wa.me/{{ eval.whatsapp }}">Enviar WhatsApp</a></td>
+			<td><a class="btn btn-primary" href="{% url 'eliminareval' eval.pk %}">Eliminar</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+        </table>
+{% endif %}
+{% endif %}
+{% if horas %}
+        <h3 class="text-center">Horas del día</h3>
+        <table class="table" id="porllamar">
+                <caption>Lista de las horas agendadas para el día de hoy</caption>
+                <thead class="thead-dark">
+                        <tr>
+                                <th class="text-center" scope="col">Detalle</th>
+                                <th class="text-center" scope="col">Paciente</th>
+                                <th class="text-center" scope="col"></th>
+                                <th class="text-center" scope="col"></th>
+                                <th class="text-center" scope="col">Listo</th>
+                        </tr>
+                </thead>
+                <tbody>
+                {% for hora in horas %}
+                <tr class="text-warning text-center lead">
+                        <td>&#128100;{{hora.servicio.presupuesto.paciente}} a las {{hora.inicio|date:'H:i'}} por un {{ hora.servicio.prestacion.nombre }}</td>
+                        <td><a href="{{ hora.servicio.presupuesto.paciente }}">{{ hora.servicio.presupuesto.paciente }}</a></td>
+			<td>{% if hora.realizada %}Hora realizada{% else %}<a class="btn btn-primary" href="{% url 'concretarhora' hora.id %}">Concretar</a>{% endif %}</td>
+                        <td><a class="btn btn-primary" href="{% url 'detallehora' hora.id %}">Ver detalle</a></td>
+                        <td><input type="checkbox" id="{{ hora.id }}_{% now 'd-m' %}" autocomplete="off"/></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+        </table>
+{% else %}
+
+<h5 class="lead text-center">No hay horas reservadas para hoy</h5>
+
+{% endif %}
+{% endif %}
+
+{% endif %}
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'reg/js/index.js' %}"></script>
+{% endblock %}

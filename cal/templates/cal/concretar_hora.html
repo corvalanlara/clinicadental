@@ -1,0 +1,15 @@
+{% extends 'reg/base.html' %}
+
+{% block contenido %}
+{% include 'reg/mensajes.html' %}
+
+<h1>Hora realizada</h1>
+<p>Observaciones</p>
+
+<form action="" method="POST">
+	{% csrf_token %}
+	{{ form.as_table }}
+	<input class="btn btn-primary mx-auto mb-5 d-block" type="submit" value="OK">
+</form>
+
+{% endblock %}

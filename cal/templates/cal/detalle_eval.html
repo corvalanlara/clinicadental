@@ -1,0 +1,14 @@
+{% extends 'reg/base.html' %}
+{% load regtags %}
+{% block contenido %}
+{% include 'reg/mensajes.html' %}
+
+<div class="jumbotron jumbotron-fluid text-center mx-2 my-4">
+	<h1 class="display-5">Evaluación</h1>
+	<p class="lead">Solicitante: {{ eval.nombre }}</p>
+	<p><a href="tel:{{ eval.celular }}">&#128242;{{ eval.celular }}</a></p>
+	<a class="btn btn-primary" href="{% url 'actualizareval' eval.pk %}">Reagendar</a>
+	<a class="btn btn-primary" href="{% url 'eliminareval' eval.pk %}">Eliminar</a>
+</div>
+
+{% endblock %}

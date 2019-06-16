@@ -1,0 +1,23 @@
+{% extends "reg/base.html" %}
+{% load static %}
+
+{% block calendario%}active{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'cal/css/calendario.css' %}"/>
+{% endblock %}
+
+{% block contenido %}
+{% include 'reg/mensajes.html' %}
+
+<div class="clearfix">
+	<a class="btn btn-primary left" href="{% url 'calendario' %}?{{ mes_previo }}">Mes previo</a>
+	<a class="btn btn-primary right" href="{% url 'calendario' %}?{{ mes_siguiente }}">Mes siguiente</a>
+</div>
+
+{{ calendar }}
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="{% static 'cal/js/calendario.js' %}"></script>
+{% endblock%}

@@ -1,0 +1,24 @@
+{% extends "reg/base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'reg/css/styles.css' %}"/>
+{% endblock %}
+
+{% block contenido %}
+{% include 'reg/mensajes.html' %}
+<h1>Tratamientos realizados</h1>
+{% if realizados %}
+{% for realizado in realizados %}
+<p>{{ realizado.servicio.prestacion.nombre }}</p>
+{% endfor %}
+{% endif %}
+<h3>Nuevo Ingreso</h3>
+
+	<form action="" method="post" id="nuevo_ingreso">
+		{% csrf_token %}
+		<table id="ingreso_form">
+			{{ form.as_table }}
+		</table>
+		<input type="submit" value="OK">
+	</form>
+{% endblock %}

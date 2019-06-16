@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>   
+	<!-- Required meta tags -->
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    	<!-- Bootstrap CSS -->
+    	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	{% block title %}<title>Clínica Dental Mauricio Dr. Mauricio Martínez</title>{% endblock %}
+	{% load static %}
+	<link rel="shortcut icon" href="{% static 'reg/icons/tooth.svg' %}"/>
+	{% block css %}{% endblock %}
+	
+	<!-- Web app manifest -->
+	<link rel="manifest" href="{% static 'reg/odo.webmanifest' %}">
+</head>
+<body>
+{% load regtags %}
+{% block sidebar %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+	<a class="navbar-brand" href="{% url 'inicio' %}">
+		<img src="{% static 'reg/icons/tooth.svg' %}" width="30" height="30" class="d-inline-block align-top" alt="\">Clínica dental</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+	    
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto mr-4">
+		{% if user.is_authenticated %}
+	<span class="navbar-text text-white px-3">
+		Bienvenido, {{ user.get_short_name }}
+	</span>
+	{% if request.user|en_grupo:'Administrativos' %}
+      <li class="nav-item dropdown">
+	      <a class="nav-link dropdown-toggle {% block nuevo %}{% endblock %}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Nuevo
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+		<a class="dropdown-item" href="{% url 'crear_formtotal' %}">Paciente + Presupuesto</a>
+		<div class="dropdown-divider"></div>
+		<a class="dropdown-item" href="{% url 'crear_presupuesto' %}">Presupuesto</a>
+		<a class="dropdown-item" href="{% url 'crear_paciente' %}">Paciente</a>
+		<a class="dropdown-item" href="{% url 'crear_prestacion' %}">Prestación</a>
+        </div>
+      </li>
+      {% endif %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle {% block reserva %}{% endblock %}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Reservar
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{% url 'crear_hora' %}">Hora</a>
+		<a class="dropdown-item" href="{% url 'creareval' %}">Evaluación</a>
+        </div>
+      </li>
+      <li class="nav-item">
+	      <a class="nav-link {% block calendario %}{% endblock %}" href="{% url 'calendario' %}">Calendario</a>
+      </li>
+      <li class="nav-item">
+	      <a class="nav-link {% block agenda %}{% endblock %}" href="{% url 'horasdeldia' %}">Agenda del día</a>
+      </li>
+      <li>
+	      <a class="nav-link" href="{% url 'logout' %}">Salir</a>
+      </li>
+     		{% else %}
+	<li class="nav item">
+		<a class="nav-link" href="{% url 'login' %}">Ingresar</a>
+	</li>
+		{% endif %}
+    </ul>
+    {% if user.is_authenticated %}
+    <form class="form-inline my-2 my-lg-0" action="{% url 'watson:search' %}">
+	    <input class="form-control mr-sm-2" type="search" placeholder="Buscar paciente" aria-label="Buscar" name="q" value="{{ request.GET.q }}">
+      <button class="btn btn-outline-light text-light my-2 my-sm-0" type="submit">Buscar</button>
+    </form>
+    {% endif %}
+  </div>
+</nav>
+{% endblock %}
+	<div class="container-fluid">{% block contenido %}{% endblock %}</div>
+
+	<!-- Optional JavaScript -->
+    	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	{% block javascript %}{% endblock %}
+	{% block footer %}{% endblock %}
+
+<!--
+<footer class="bg-dark text-white mt-7 py-1 text-center fixed-bottom">
+	<div class="container">
+		<p>
+		Desarrollado por <a class = "text-white" href="https://corvalan.dev">Daniel Corvalán</a>
+		</p>
+	</div>
+	
+</footer>
+-->
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+{% extends "reg/base.html" %}
+
+{% block contenido %}
+{% include 'reg/mensajes.html' %}
+
+<h1 class="display-4 text-center">¿Cancelar la evaluación reservada?</h1>
+<p>¿Estás seguro que deseas cancelar la evaluación de {{ eval.nombre }} para el {{ eval.hora|date }} a las {{ eval.hora|time }}?</p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input class="btn btn-primary mx-auto mb-5 d-block" type="submit" value="Sí, cancelar">
+</form>
+
+{% endblock %}
+
